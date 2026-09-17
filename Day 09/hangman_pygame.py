@@ -32,6 +32,14 @@ def resource_path(filename):
 
     return os.path.join(os.path.dirname(__file__), filename)
 
+background = pygame.image.load(
+    resource_path("background.png")
+).convert()
+
+background = pygame.transform.scale(
+    background,
+    (WIDTH, HEIGHT)
+)
 
 # Read words
 try:
@@ -60,21 +68,23 @@ def new_game():
 
 # Draw hangman
 def draw_hangman(errors):
+    HANGMAN_COLOR = (45, 180, 220)
+
     # Gallows
-    pygame.draw.line(screen, WHITE, (60, 460), (280, 460), 5)
-    pygame.draw.line(screen, WHITE, (150, 460), (150, 110), 5)
-    pygame.draw.line(screen, WHITE, (150, 110), (320, 110), 5)
-    pygame.draw.line(screen, WHITE, (320, 110), (320, 160), 5)
+    pygame.draw.line(screen, HANGMAN_COLOR, (60, 460), (280, 460), 5)
+    pygame.draw.line(screen, HANGMAN_COLOR, (150, 460), (150, 110), 5)
+    pygame.draw.line(screen, HANGMAN_COLOR, (150, 110), (320, 110), 5)
+    pygame.draw.line(screen, HANGMAN_COLOR, (320, 110), (320, 160), 5)
 
     # Head
     if errors >= 1:
-        pygame.draw.circle(screen, WHITE, (320, 195), 35, 4)
+        pygame.draw.circle(screen, HANGMAN_COLOR, (320, 195), 35, 4)
 
     # Body
     if errors >= 2:
         pygame.draw.line(
             screen,
-            WHITE,
+            HANGMAN_COLOR,
             (320, 230),
             (320, 330),
             4
@@ -84,7 +94,7 @@ def draw_hangman(errors):
     if errors >= 3:
         pygame.draw.line(
             screen,
-            WHITE,
+            HANGMAN_COLOR,
             (320, 260),
             (275, 300),
             4
@@ -94,7 +104,7 @@ def draw_hangman(errors):
     if errors >= 4:
         pygame.draw.line(
             screen,
-            WHITE,
+            HANGMAN_COLOR,
             (320, 260),
             (365, 300),
             4
@@ -104,7 +114,7 @@ def draw_hangman(errors):
     if errors >= 5:
         pygame.draw.line(
             screen,
-            WHITE,
+            HANGMAN_COLOR,
             (320, 330),
             (280, 390),
             4
@@ -114,12 +124,11 @@ def draw_hangman(errors):
     if errors >= 6:
         pygame.draw.line(
             screen,
-            WHITE,
+            HANGMAN_COLOR,
             (320, 330),
             (360, 390),
             4
         )
-
 
 word, guessed_letters, attempts = new_game()
 
@@ -169,7 +178,7 @@ while running:
 
 
     # Background
-    screen.fill(BACKGROUND)
+    screen.blit(background, (0, 0))
 
 
     # Title
@@ -220,7 +229,7 @@ while running:
     letters_text = text_font.render(
         "Letters: " + " ".join(guessed_letters),
         True,
-        GRAY
+        WHITE
     )
 
     screen.blit(
@@ -262,7 +271,7 @@ while running:
         lose_text = big_font.render(
             "GAME OVER",
             True,
-            RED
+            pygame.Color("red")
         )
 
         screen.blit(
